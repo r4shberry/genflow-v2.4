@@ -95,38 +95,6 @@ pushes. `perf.js` is last so it wraps the final render functions.
 
 ### 1. Supabase (accounts + sync)
 
-1. Create a free project at supabase.com.
-2. SQL Editor → run:
-
-   ```sql
-   create table if not exists public.profiles (
-     id uuid primary key references auth.users(id) on delete cascade,
-     state jsonb,
-     updated_at timestamptz default now()
-   );
-   alter table public.profiles enable row level security;
-   create policy "own row read"   on public.profiles for select using (auth.uid() = id);
-   create policy "own row insert" on public.profiles for insert with check (auth.uid() = id);
-   create policy "own row update" on public.profiles for update using (auth.uid() = id);
-   grant select, insert, update on public.profiles to authenticated;
-   ```
-
-3. **Settings → API** → copy the **Project URL** and the **Publishable key**
-   (`sb_publishable_...`). Use the *copy button* — the displayed value is shortened
-   with `...` and copying by hand truncates it.
-4. Paste both into `supabase-config.js`:
-
-   ```javascript
-   window.SB_URL = 'https://YOURPROJECT.supabase.co';
-   window.SB_KEY = 'sb_publishable_...full key, no dots...';
-   ```
-
-5. **Authentication → URL Configuration**:
-   - Site URL: `https://r4shberry.github.io/genflow-v2/`
-   - Redirect URLs: add `https://r4shberry.github.io/genflow-v2/**`
-6. **Authentication → Providers → Email**: for easy testing, turn **off**
-   "Confirm email" (re-enable before a real launch).
-
 ### 2. Gemini (optional AI features)
 
 Get a free key at `aistudio.google.com/apikey`. Paste it into the 🔑 field inside
